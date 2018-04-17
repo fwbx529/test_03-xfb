@@ -15,6 +15,9 @@ float aspect;
 
 void Display(MeshReader& mesh_reader)
 {
+    glEnable(GL_DEPTH_TEST);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
     ShaderInfo shader_info[] =
     {
         { GL_VERTEX_SHADER, "render.vs.glsl" },
@@ -37,7 +40,6 @@ void Display(MeshReader& mesh_reader)
     glUniformMatrix4fv(view_matrix_loc, 1, GL_FALSE, &view[0][0]);
     glUniformMatrix4fv(projection_matrix_loc, 1, GL_FALSE, &projection[0][0]);
 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     mesh_reader.Draw();
 }
 
