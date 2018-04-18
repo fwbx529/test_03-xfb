@@ -158,8 +158,8 @@
     <ClInclude Include="MeshReader.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="render.fs.glsl" />
-    <None Include="render.vs.glsl" />
+    <None Include="meshreader.render.fs.glsl" />
+    <None Include="meshreader.render.vs.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

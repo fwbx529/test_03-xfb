@@ -34,10 +34,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="render.fs.glsl">
+    <None Include="meshreader.render.fs.glsl">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="render.vs.glsl">
+    <None Include="meshreader.render.vs.glsl">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>

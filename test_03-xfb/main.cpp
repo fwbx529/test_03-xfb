@@ -13,33 +13,22 @@ using namespace std;
 
 float aspect;
 
-void Display(MeshReader& mesh_reader)
+void Initialize(MeshReader& mesh_reader)
 {
-    glEnable(GL_DEPTH_TEST);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    ShaderInfo shader_info[] =
-    {
-        { GL_VERTEX_SHADER, "render.vs.glsl" },
-        { GL_FRAGMENT_SHADER, "render.fs.glsl" },
-        { GL_NONE, NULL }
-    };
-    GLuint render_prog = LoadShaders(shader_info);
-    glUseProgram(render_prog);
-
-    GLuint model_matrix_loc = glGetUniformLocation(render_prog, "model_matrix");
-    GLuint view_matrix_loc = glGetUniformLocation(render_prog, "view_matrix");
-    GLuint projection_matrix_loc = glGetUniformLocation(render_prog, "projection_matrix");
-
     glm::mat4 model;
     glm::mat4 view(glm::lookAt(glm::vec3(0.0f, 0.0f, 1.0f),
                                glm::vec3(0.0f, 0.0f, 0.0f),
                                glm::vec3(0.0f, 1.0f, 0.0f)));
     glm::mat4 projection(glm::perspective(glm::radians(60.0f), 1.0f / aspect, 0.1f, 100.0f));
-    glUniformMatrix4fv(model_matrix_loc, 1, GL_FALSE, &model[0][0]);
-    glUniformMatrix4fv(view_matrix_loc, 1, GL_FALSE, &view[0][0]);
-    glUniformMatrix4fv(projection_matrix_loc, 1, GL_FALSE, &projection[0][0]);
+    mesh_reader.Init(model, view, projection);
+    mesh_reader.SetMatrix(model, view, projection);
+    mesh_reader.ReadObj("../data/bunny.obj");
+}
 
+void Display(MeshReader& mesh_reader)
+{
+    glEnable(GL_DEPTH_TEST);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     mesh_reader.Draw();
 }
 
@@ -56,7 +45,7 @@ int main(int argc, char** argv)
     glewInit();
 
     MeshReader mesh_reader;
-    mesh_reader.ReadObj("../data/bunny.obj");
+    Initialize(mesh_reader);
     while (!glfwWindowShouldClose(window))
     {
         Display(mesh_reader);
