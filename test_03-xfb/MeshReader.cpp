@@ -10,10 +10,11 @@ using namespace std;
 MeshReader::MeshReader()
 {
     glCreateVertexArrays(1, &vao);
-    glCreateBuffers(2, vbo);
+    glCreateBuffers(3, array_buffer);
+    glCreateBuffers(1, &element_buffer);
 }
 
-void MeshReader::Init(glm::mat4& model, glm::mat4& view, glm::mat4& projection)
+void MeshReader::Init()
 {
     ShaderInfo shader_info[] =
     {
@@ -56,12 +57,12 @@ void MeshReader::ReadObj(const string obj_filename)
     face_count = (int)face.size();
 
     glBindVertexArray(vao);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+    glBindBuffer(GL_ARRAY_BUFFER, array_buffer[0]);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
     glEnableVertexAttribArray(0);
-    glNamedBufferStorage(vbo[0], vertex.size() * sizeof(GLfloat), vertex.data(), 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo[1]);
-    glNamedBufferStorage(vbo[1], face.size() * sizeof(GLuint), face.data(), 0);
+    glNamedBufferStorage(array_buffer[0], vertex.size() * sizeof(GLfloat), vertex.data(), 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer);
+    glNamedBufferStorage(element_buffer, face.size() * sizeof(GLuint), face.data(), 0);
     glBindVertexArray(0);
 }
 
@@ -85,11 +86,13 @@ void MeshReader::Draw()
     glUseProgram(render_prog);
     glBindVertexArray(vao);
     glDrawElements(GL_TRIANGLES, 3 * face_count, GL_UNSIGNED_INT, NULL);
+    glUseProgram(0);
     glBindVertexArray(0);
 }
 
 void MeshReader::Free()
 {
     glDeleteVertexArrays(1, &vao);
-    glDeleteBuffers(2, vbo);
+    glDeleteBuffers(3, array_buffer);
+    glDeleteBuffers(1, &element_buffer);
 }

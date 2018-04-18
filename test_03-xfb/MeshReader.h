@@ -15,14 +15,15 @@ class MeshReader
 {
 public:
     MeshReader();
-    void Init(glm::mat4& model, glm::mat4& view, glm::mat4& projection);
+    void Init();
     void ReadObj(const string obj_filename);
     void SetMatrix(glm::mat4& model, glm::mat4& view, glm::mat4& projection);
     void Draw();
     void Free();
 private:
     GLuint vao;
-    GLuint vbo[2];
+    GLuint array_buffer[3];
+    GLuint element_buffer;
     GLuint render_prog;
     unsigned int face_count;
 };
