@@ -25,5 +25,6 @@ private:
     GLuint array_buffer[3];
     GLuint element_buffer;
     GLuint render_prog;
+    unsigned int vertex_count;
     unsigned int face_count;
 };

@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <string>
 #include <vector>
 
 using namespace std;
@@ -27,42 +28,73 @@ void MeshReader::Init()
 
 void MeshReader::ReadObj(const string obj_filename)
 {
-    vector<GLfloat> vertex;
-    vector<GLuint> face;
+    vector<glm::vec3> vertex;
+    vector<glm::ivec3> face;
+    vector<glm::vec3> normal;
 
     ifstream fin(obj_filename);
-    char vf;
-    while (fin >> vf)
+    string cmd;
+    bool vs_normal = false;
+    while (fin >> cmd)
     {
-        GLfloat vx, vy, vz;
-        GLuint fx, fy, fz;
-        switch(vf)
+        GLfloat xf, yf, zf;
+        GLuint xi, yi, zi;
+
+        if (cmd == "v")
         {
-        case 'v':
-            fin >> vx >> vy >> vz;
-            vertex.push_back(vx);
-            vertex.push_back(vy);
-            vertex.push_back(vz);
-            break;
-        case 'f': 
-            fin >> fx >> fy >> fz;
-            fx--; fy--; fz--;
-            face.push_back(fx);
-            face.push_back(fy);
-            face.push_back(fz);
-            break;
+            fin >> xf >> yf >> zf;
+            vertex.push_back(glm::vec3(xf, yf, zf));
+        }
+        else if (cmd == "f")
+        {
+            fin >> xi >> yi >> zi;
+            xi--; yi--; zi--;
+            face.push_back(glm::ivec3(xi, yi, zi));
+        }
+        else if (cmd == "vn")
+        {
+            vs_normal = true;
+            //to be updated
         }
     }
     fin.close();
+    vertex_count = (int)vertex.size();
     face_count = (int)face.size();
 
+    if (!vs_normal)
+    {
+        normal = vector<glm::vec3>(vertex_count, glm::vec3(0, 0, 0));
+        for (unsigned int f = 0; f < face_count; f++)
+        {
+            glm::ivec3 f_id(face[f]);
+            glm::vec3 vx(vertex[f_id.x]);
+            glm::vec3 vy(vertex[f_id.y]);
+            glm::vec3 vz(vertex[f_id.z]);
+            glm::vec3 n = glm::cross(vy - vx, vz - vx);
+            normal[f_id.x] += n;
+            normal[f_id.y] += n;
+            normal[f_id.z] += n;
+        }
+        for (unsigned int v = 0; v < vertex_count; v++)
+        {
+            normal[v] = glm::normalize(normal[v]);
+        }
+    }
+
     glBindVertexArray(vao);
+
     glBindBuffer(GL_ARRAY_BUFFER, array_buffer[0]);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
     glEnableVertexAttribArray(0);
-    glNamedBufferStorage(array_buffer[0], vertex.size() * sizeof(GLfloat), vertex.data(), 0);
+    glNamedBufferStorage(array_buffer[0], vertex_count * sizeof(glm::vec3), vertex.data(), 0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, array_buffer[1]);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+    glEnableVertexAttribArray(1);
+    glNamedBufferStorage(array_buffer[1], vertex_count * sizeof(glm::vec3), normal.data(), 0);
+
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer);
-    glNamedBufferStorage(element_buffer, face.size() * sizeof(GLuint), face.data(), 0);
+    glNamedBufferStorage(element_buffer, face_count * sizeof(glm::ivec3), face.data(), 0);
     glBindVertexArray(0);
 }
 
