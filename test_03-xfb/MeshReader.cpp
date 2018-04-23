@@ -95,6 +95,7 @@ void MeshReader::ReadObj(const string obj_filename)
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer);
     glNamedBufferStorage(element_buffer, face_count * sizeof(glm::ivec3), face.data(), 0);
+
     glBindVertexArray(0);
 }
 
