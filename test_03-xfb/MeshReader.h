@@ -34,6 +34,7 @@ private:
     unsigned int face_count;
 
     GLuint renderxfb_world_position;
+    GLuint renderxfb_world_normal;
     GLuint renderxfb_prog;
 
     void SetMatrixProg(GLuint& prog, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection);

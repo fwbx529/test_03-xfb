@@ -125,6 +125,7 @@ void MeshReader::Free()
 void MeshReader::InitXfb()
 {
     glCreateBuffers(1, &renderxfb_world_position);
+    glCreateBuffers(1, &renderxfb_world_normal);
 
     ShaderInfo shader_info[] =
     {
@@ -136,9 +137,9 @@ void MeshReader::InitXfb()
 
     static const char * varyings[] =
     {
-        "world_position_xfb"
+        "world_position_xfb", "world_normal_xfb"
     };
-    glTransformFeedbackVaryings(renderxfb_prog, 1, varyings, GL_INTERLEAVED_ATTRIBS);
+    glTransformFeedbackVaryings(renderxfb_prog, 2, varyings, GL_SEPARATE_ATTRIBS);
     glLinkProgram(renderxfb_prog);
 }
 
@@ -150,6 +151,8 @@ void MeshReader::ReadObjXfb(const string obj_filename)
     
     glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, renderxfb_world_position);
     glNamedBufferStorage(renderxfb_world_position, 3 * face_count * sizeof(glm::vec3), NULL, 0);
+    glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 1, renderxfb_world_normal);
+    glNamedBufferStorage(renderxfb_world_normal, 3 * face_count * sizeof(glm::vec3), NULL, 0);
 
     glBindVertexArray(0);
 }
@@ -171,26 +174,26 @@ void MeshReader::DrawXfb()
     glUseProgram(0);
     glBindVertexArray(0);
 
-    //////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////
     //for testing xfb
-    //glUseProgram(renderxfb_prog);
-    //GLuint vao_temp;
-    //glCreateVertexArrays(1, &vao_temp);
-    //glBindVertexArray(vao_temp);
+    glUseProgram(renderxfb_prog);
+    GLuint vao_temp;
+    glCreateVertexArrays(1, &vao_temp);
+    glBindVertexArray(vao_temp);
 
-    //glBindBuffer(GL_ARRAY_BUFFER, renderxfb_world_position);
-    //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-    //glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, renderxfb_world_position);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+    glEnableVertexAttribArray(0);
 
-    //glBindBuffer(GL_ARRAY_BUFFER, array_buffer[1]);
-    //glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-    //glEnableVertexAttribArray(1);
+    glBindBuffer(GL_ARRAY_BUFFER, renderxfb_world_normal);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+    glEnableVertexAttribArray(1);
 
-    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer);
-    //glDrawArrays(GL_POINTS, 0, 3 * face_count);
-    //glBindVertexArray(0);
-    //glUseProgram(0);
-    //////////////////////////////////////////////////////////////////////////
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer);
+    glDrawArrays(GL_TRIANGLES, 0, 3 * face_count);
+    glBindVertexArray(0);
+    glUseProgram(0);
+    ////////////////////////////////////////////////////////////////////////
 }
 
 void MeshReader::SetMatrixProg(GLuint& prog, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
