@@ -40,5 +40,11 @@
     <None Include="meshreader.render.vs.glsl">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="meshreaderxfb.render.fs.glsl">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="meshreaderxfb.render.vs.glsl">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

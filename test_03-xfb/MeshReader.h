@@ -20,6 +20,10 @@ public:
     void SetMatrix(glm::mat4& model, glm::mat4& view, glm::mat4& projection);
     void Draw();
     void Free();
+
+    void InitXfb();
+    void ReadObjXfb(const string obj_filename);
+    void DrawXfb();
 private:
     GLuint vao;
     GLuint array_buffer[3];
@@ -27,4 +31,7 @@ private:
     GLuint render_prog;
     unsigned int vertex_count;
     unsigned int face_count;
+
+    GLuint renderxfb_world_position;
+    GLuint renderxfb_prog;
 };

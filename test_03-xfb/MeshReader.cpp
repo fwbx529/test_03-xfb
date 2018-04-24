@@ -129,3 +129,45 @@ void MeshReader::Free()
     glDeleteBuffers(3, array_buffer);
     glDeleteBuffers(1, &element_buffer);
 }
+
+void MeshReader::InitXfb()
+{
+    ShaderInfo shader_info[] =
+    {
+        { GL_VERTEX_SHADER, "meshreaderxfb.render.vs.glsl" },
+        { GL_FRAGMENT_SHADER, "meshreaderxfb.render.fs.glsl" },
+        { GL_NONE, NULL }
+    };
+    renderxfb_prog = LoadShaders(shader_info);
+
+    static const char * varyings[] =
+    {
+        "world_position_xfb"
+    };
+    glTransformFeedbackVaryings(renderxfb_prog, 1, varyings, GL_INTERLEAVED_ATTRIBS);
+    glLinkProgram(renderxfb_prog);
+}
+
+void MeshReader::ReadObjXfb(const string obj_filename)
+{
+    ReadObj(obj_filename);
+
+    glCreateBuffers(1, &renderxfb_world_position);
+    glBindVertexArray(vao);
+    
+    glBindBuffer(GL_TRANSFORM_FEEDBACK_BUFFER, renderxfb_world_position);
+    glNamedBufferStorage(renderxfb_world_position, vertex_count * sizeof(glm::vec4), NULL, 0);
+
+    glBindVertexArray(0);
+}
+
+void MeshReader::DrawXfb()
+{
+    glUseProgram(renderxfb_prog);
+    glBindVertexArray(vao);
+    glBeginTransformFeedback(GL_TRIANGLES);
+    glDrawElements(GL_TRIANGLES, 3 * face_count, GL_UNSIGNED_INT, NULL);
+    glEndTransformFeedback();
+    glUseProgram(0);
+    glBindVertexArray(0);
+}

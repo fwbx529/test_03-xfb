@@ -20,9 +20,9 @@ void Initialize(MeshReader& mesh_reader)
                                glm::vec3(0.0f, 0.0f, 0.0f),
                                glm::vec3(0.0f, 1.0f, 0.0f)));
     glm::mat4 projection(glm::perspective(glm::radians(60.0f), 1.0f / aspect, 0.1f, 100.0f));
-    mesh_reader.Init();
+    mesh_reader.InitXfb();
     mesh_reader.SetMatrix(model, view, projection);
-    mesh_reader.ReadObj("../data/bunny.obj");
+    mesh_reader.ReadObjXfb("../data/bunny.obj");
 }
 
 void Display(MeshReader& mesh_reader)
@@ -32,7 +32,7 @@ void Display(MeshReader& mesh_reader)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     static const float white[] = { 1.0f, 1.0f, 1.0f, 0.0f };
     glClearBufferfv(GL_COLOR, 0, white);
-    mesh_reader.Draw();
+    mesh_reader.DrawXfb();
 }
 
 int main(int argc, char** argv)
