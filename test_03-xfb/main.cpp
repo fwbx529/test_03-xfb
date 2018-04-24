@@ -28,6 +28,7 @@ void Initialize(MeshReader& mesh_reader)
 void Display(MeshReader& mesh_reader)
 {
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_MULTISAMPLE);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     static const float white[] = { 1.0f, 1.0f, 1.0f, 0.0f };
     glClearBufferfv(GL_COLOR, 0, white);
