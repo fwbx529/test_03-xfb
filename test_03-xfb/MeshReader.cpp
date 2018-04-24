@@ -99,18 +99,10 @@ void MeshReader::ReadObj(const string obj_filename)
     glBindVertexArray(0);
 }
 
-void MeshReader::SetMatrix(glm::mat4& model, glm::mat4& view, glm::mat4& projection)
+void MeshReader::SetMatrix(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
 {
     glUseProgram(render_prog);
-
-    GLuint model_matrix_loc = glGetUniformLocation(render_prog, "model_matrix");
-    GLuint view_matrix_loc = glGetUniformLocation(render_prog, "view_matrix");
-    GLuint projection_matrix_loc = glGetUniformLocation(render_prog, "projection_matrix");
-
-    glUniformMatrix4fv(model_matrix_loc, 1, GL_FALSE, &model[0][0]);
-    glUniformMatrix4fv(view_matrix_loc, 1, GL_FALSE, &view[0][0]);
-    glUniformMatrix4fv(projection_matrix_loc, 1, GL_FALSE, &projection[0][0]);
-
+    SetMatrixProg(render_prog, model, view, projection);
     glUseProgram(0);
 }
 
@@ -161,6 +153,13 @@ void MeshReader::ReadObjXfb(const string obj_filename)
     glBindVertexArray(0);
 }
 
+void MeshReader::SetMatrixXfb(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
+{
+    glUseProgram(renderxfb_prog);
+    SetMatrixProg(renderxfb_prog, model, view, projection);
+    glUseProgram(0);
+}
+
 void MeshReader::DrawXfb()
 {
     glUseProgram(renderxfb_prog);
@@ -170,4 +169,15 @@ void MeshReader::DrawXfb()
     glEndTransformFeedback();
     glUseProgram(0);
     glBindVertexArray(0);
+}
+
+void MeshReader::SetMatrixProg(GLuint& prog, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
+{
+    GLuint model_matrix_loc = glGetUniformLocation(prog, "model_matrix");
+    GLuint view_matrix_loc = glGetUniformLocation(prog, "view_matrix");
+    GLuint projection_matrix_loc = glGetUniformLocation(prog, "projection_matrix");
+
+    glUniformMatrix4fv(model_matrix_loc, 1, GL_FALSE, &model[0][0]);
+    glUniformMatrix4fv(view_matrix_loc, 1, GL_FALSE, &view[0][0]);
+    glUniformMatrix4fv(projection_matrix_loc, 1, GL_FALSE, &projection[0][0]);
 }

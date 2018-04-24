@@ -21,7 +21,7 @@ void Initialize(MeshReader& mesh_reader)
                                glm::vec3(0.0f, 1.0f, 0.0f)));
     glm::mat4 projection(glm::perspective(glm::radians(60.0f), 1.0f / aspect, 0.1f, 100.0f));
     mesh_reader.InitXfb();
-    mesh_reader.SetMatrix(model, view, projection);
+    mesh_reader.SetMatrixXfb(model, view, projection);
     mesh_reader.ReadObjXfb("../data/bunny.obj");
 }
 

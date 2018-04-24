@@ -17,12 +17,13 @@ public:
     MeshReader();
     void Init();
     void ReadObj(const string obj_filename);
-    void SetMatrix(glm::mat4& model, glm::mat4& view, glm::mat4& projection);
+    void SetMatrix(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection);
     void Draw();
     void Free();
 
     void InitXfb();
     void ReadObjXfb(const string obj_filename);
+    void SetMatrixXfb(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection);
     void DrawXfb();
 private:
     GLuint vao;
@@ -34,4 +35,6 @@ private:
 
     GLuint renderxfb_world_position;
     GLuint renderxfb_prog;
+
+    void SetMatrixProg(GLuint& prog, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection);
 };
