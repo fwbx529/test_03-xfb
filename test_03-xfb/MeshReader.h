@@ -25,6 +25,7 @@ public:
     void ReadObjXfb(const string obj_filename);
     void SetMatrixXfb(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection);
     void DrawXfb();
+    void TestXfb();
 private:
     GLuint vao;
     GLuint array_buffer[3];

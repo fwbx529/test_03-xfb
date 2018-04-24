@@ -173,9 +173,10 @@ void MeshReader::DrawXfb()
     glEndTransformFeedback();
     glUseProgram(0);
     glBindVertexArray(0);
+}
 
-    ////////////////////////////////////////////////////////////////////////
-    //for testing xfb
+void MeshReader::TestXfb()
+{
     glUseProgram(renderxfb_prog);
     GLuint vao_temp;
     glCreateVertexArrays(1, &vao_temp);
@@ -193,7 +194,6 @@ void MeshReader::DrawXfb()
     glDrawArrays(GL_TRIANGLES, 0, 3 * face_count);
     glBindVertexArray(0);
     glUseProgram(0);
-    ////////////////////////////////////////////////////////////////////////
 }
 
 void MeshReader::SetMatrixProg(GLuint& prog, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
