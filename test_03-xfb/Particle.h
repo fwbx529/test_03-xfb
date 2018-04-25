@@ -1,5 +1,7 @@
 #pragma once
 
+#include <time.h>
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -23,6 +25,6 @@ private:
     GLuint particle_prog;
     int particle_count;
     bool frame_even;
-
+    clock_t last_frame;
     void SetMatrixProg(GLuint& prog, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection);
 };

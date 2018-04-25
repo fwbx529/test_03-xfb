@@ -1,8 +1,8 @@
 
 #include "Particle.h"
 
+#include <iostream>
 #include <vector>
-#include <time.h>
 
 struct particle_status
 {
@@ -37,6 +37,7 @@ void Particle::Init()
 
 void Particle::SetInitial(const int count)
 {
+    last_frame = clock();
     particle_count = count;
     srand((unsigned)time(NULL));
     vector<particle_status> status(count);
@@ -71,7 +72,12 @@ void Particle::SetMatrix(const glm::mat4& model, const glm::mat4& view, const gl
 
 void Particle::Draw()
 {
+    float time_second = (float)(clock() - last_frame) / 1000;
+    last_frame = clock();
     glUseProgram(particle_prog);
+    GLuint time_second_loc = glGetUniformLocation(particle_prog, "time_second");
+    glUniform1f(time_second_loc, time_second);
+
     if (frame_even)
     {
         glBindVertexArray(vao[0]);
