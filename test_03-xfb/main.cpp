@@ -7,13 +7,14 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "MeshReader.h"
+#include "Particle.h"
 #include "LoadShaders.h"
 
 using namespace std;
 
 float aspect;
 
-void Initialize(MeshReader& mesh_reader)
+void Initialize(MeshReader& mesh_reader, Particle& particle)
 {
     glm::mat4 model;
     glm::mat4 view(glm::lookAt(glm::vec3(0.0f, 0.0f, 1.0f),
@@ -22,10 +23,13 @@ void Initialize(MeshReader& mesh_reader)
     glm::mat4 projection(glm::perspective(glm::radians(60.0f), 1.0f / aspect, 0.1f, 100.0f));
     mesh_reader.InitXfb();
     mesh_reader.SetMatrixXfb(model, view, projection);
-    mesh_reader.ReadObjXfb("../data/bunny.obj");
+    mesh_reader.ReadObj("../data/bunny.obj");
+    particle.Init();
+    particle.SetInitial(200);
+    particle.SetMatrix(model, view, projection);
 }
 
-void Display(MeshReader& mesh_reader)
+void Display(MeshReader& mesh_reader, Particle& particle)
 {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_MULTISAMPLE);
@@ -33,6 +37,7 @@ void Display(MeshReader& mesh_reader)
     static const float white[] = { 1.0f, 1.0f, 1.0f, 0.0f };
     glClearBufferfv(GL_COLOR, 0, white);
     mesh_reader.DrawXfb();
+    particle.Draw();
 }
 
 int main(int argc, char** argv)
@@ -49,10 +54,11 @@ int main(int argc, char** argv)
     glewInit();
 
     MeshReader mesh_reader;
-    Initialize(mesh_reader);
+    Particle particle;
+    Initialize(mesh_reader, particle);
     while (!glfwWindowShouldClose(window))
     {
-        Display(mesh_reader);
+        Display(mesh_reader, particle);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

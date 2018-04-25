@@ -152,16 +152,20 @@
     <ClCompile Include="LoadShaders.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MeshReader.cpp" />
+    <ClCompile Include="Particle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LoadShaders.h" />
     <ClInclude Include="MeshReader.h" />
+    <ClInclude Include="Particle.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="meshreader.render.fs.glsl" />
     <None Include="meshreader.render.vs.glsl" />
     <None Include="meshreaderxfb.render.fs.glsl" />
     <None Include="meshreaderxfb.render.vs.glsl" />
+    <None Include="particle.render.fs.glsl" />
+    <None Include="particle.render.vs.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

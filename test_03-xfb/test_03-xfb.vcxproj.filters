@@ -24,12 +24,18 @@
     <ClCompile Include="LoadShaders.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MeshReader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LoadShaders.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -44,6 +50,12 @@
       <Filter>Source Files</Filter>
     </None>
     <None Include="meshreaderxfb.render.vs.glsl">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="particle.render.fs.glsl">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="particle.render.vs.glsl">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>

@@ -22,7 +22,6 @@ public:
     void Free();
 
     void InitXfb();
-    void ReadObjXfb(const string obj_filename);
     void SetMatrixXfb(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection);
     void DrawXfb();
     void TestXfb();
@@ -34,8 +33,8 @@ private:
     unsigned int vertex_count;
     unsigned int face_count;
 
-    GLuint renderxfb_world_position;
-    GLuint renderxfb_world_normal;
+    GLuint xfb_world_position;
+    GLuint xfb_world_normal;
     GLuint renderxfb_prog;
 
     void SetMatrixProg(GLuint& prog, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection);

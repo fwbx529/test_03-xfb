@@ -124,8 +124,8 @@ void MeshReader::Free()
 
 void MeshReader::InitXfb()
 {
-    glCreateBuffers(1, &renderxfb_world_position);
-    glCreateBuffers(1, &renderxfb_world_normal);
+    glCreateBuffers(1, &xfb_world_position);
+    glCreateBuffers(1, &xfb_world_normal);
 
     ShaderInfo shader_info[] =
     {
@@ -143,20 +143,6 @@ void MeshReader::InitXfb()
     glLinkProgram(renderxfb_prog);
 }
 
-void MeshReader::ReadObjXfb(const string obj_filename)
-{
-    ReadObj(obj_filename);
-
-    glBindVertexArray(vao);
-    
-    glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, renderxfb_world_position);
-    glNamedBufferStorage(renderxfb_world_position, 3 * face_count * sizeof(glm::vec3), NULL, 0);
-    glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 1, renderxfb_world_normal);
-    glNamedBufferStorage(renderxfb_world_normal, 3 * face_count * sizeof(glm::vec3), NULL, 0);
-
-    glBindVertexArray(0);
-}
-
 void MeshReader::SetMatrixXfb(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
 {
     glUseProgram(renderxfb_prog);
@@ -168,6 +154,12 @@ void MeshReader::DrawXfb()
 {
     glUseProgram(renderxfb_prog);
     glBindVertexArray(vao);
+
+    glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, xfb_world_position);
+    glNamedBufferStorage(xfb_world_position, 3 * face_count * sizeof(glm::vec3), NULL, 0);
+    glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 1, xfb_world_normal);
+    glNamedBufferStorage(xfb_world_normal, 3 * face_count * sizeof(glm::vec3), NULL, 0);
+
     glBeginTransformFeedback(GL_TRIANGLES);
     glDrawElements(GL_TRIANGLES, 3 * face_count, GL_UNSIGNED_INT, NULL);
     glEndTransformFeedback();
@@ -182,11 +174,11 @@ void MeshReader::TestXfb()
     glCreateVertexArrays(1, &vao_temp);
     glBindVertexArray(vao_temp);
 
-    glBindBuffer(GL_ARRAY_BUFFER, renderxfb_world_position);
+    glBindBuffer(GL_ARRAY_BUFFER, xfb_world_position);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
     glEnableVertexAttribArray(0);
 
-    glBindBuffer(GL_ARRAY_BUFFER, renderxfb_world_normal);
+    glBindBuffer(GL_ARRAY_BUFFER, xfb_world_normal);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
     glEnableVertexAttribArray(1);
 
