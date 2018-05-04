@@ -10,6 +10,11 @@ struct particle_status
     glm::vec3 velocity;
 };
 
+float random_1()
+{
+    return (float)rand() / RAND_MAX;
+}
+
 Particle::Particle()
 {
     glCreateVertexArrays(2, vao);
@@ -44,8 +49,11 @@ void Particle::SetInitial(const int count)
 
     for (int i = 0; i < count; i++)
     {
-        status[i].poisition = glm::vec3((float)rand() / RAND_MAX, (float)rand() / RAND_MAX, (float)rand() / RAND_MAX);
-        status[i].velocity = glm::vec3(0, 0, 0);
+        status[i].poisition = glm::vec3(0.0f, 0.8f, 0.0f);
+        status[i].velocity = glm::vec3(
+            (2 * random_1() - 1) / 5,
+            (5 * random_1() - 5),
+            (2 * random_1() / 5));
     }
 
     for (int i = 0; i < 2; i++)
@@ -89,7 +97,7 @@ void Particle::Draw()
         glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, vbo[0]);
     }
     glBeginTransformFeedback(GL_POINTS);
-    glPointSize(5);
+    glPointSize(2);
     glDrawArrays(GL_POINTS, 0, particle_count);
     glEndTransformFeedback();
 

@@ -14,7 +14,7 @@ void main()
 {
     world_position = model_matrix * vec4(position, 1.0f);
     world_position_xfb = world_position.xyz + vec3(0.1f, 0.1f, 0.0f);
-    world_normal = model_matrix*vec4(normal, 0.0f);
+    world_normal = view_matrix * model_matrix * vec4(normal, 0.0f);
     world_normal_xfb = world_normal.xyz;
     gl_Position = projection_matrix * view_matrix * model_matrix * vec4(position, 1.0f);
 }
