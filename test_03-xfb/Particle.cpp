@@ -52,7 +52,7 @@ void Particle::SetInitial(const int count)
         status[i].poisition = glm::vec3(0.0f, 0.8f, 0.0f);
         status[i].velocity = glm::vec3(
             (2 * random_1() - 1) / 5,
-            (5 * random_1() - 5),
+            0,
             (2 * random_1() / 5));
     }
 

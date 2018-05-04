@@ -17,7 +17,7 @@ float aspect;
 void Initialize(MeshReader& mesh_reader, Particle& particle)
 {
     glm::mat4 model;
-    glm::mat4 view(glm::lookAt(glm::vec3(0.0f, 0.0f, 1.0f),
+    glm::mat4 view(glm::lookAt(glm::vec3(0.0f, 0.0f, 2.0f),
                                glm::vec3(0.0f, 0.0f, 0.0f),
                                glm::vec3(0.0f, 1.0f, 0.0f)));
     glm::mat4 projection(glm::perspective(glm::radians(90.0f), 1.0f / aspect, 0.1f, 100.0f));
