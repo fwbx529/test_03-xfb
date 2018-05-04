@@ -27,7 +27,8 @@ public:
     void SetMatrixXfb(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection);
     void DrawXfb();
     void TestXfb();
-    pair<GLuint, GLuint> GetXfb() const;
+
+    int GetFaceCount();
 private:
     GLuint vao;
     GLuint array_buffer[3];

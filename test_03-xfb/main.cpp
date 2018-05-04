@@ -37,7 +37,7 @@ void Display(MeshReader& mesh_reader, Particle& particle)
     static const float black[] = { 0.0f, 0.0f, 0.0f, 0.0f };
     glClearBufferfv(GL_COLOR, 0, black);
     mesh_reader.DrawXfb();
-    particle.Draw();
+    particle.Draw(mesh_reader.GetFaceCount());
 }
 
 int main(int argc, char** argv)

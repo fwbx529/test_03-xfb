@@ -78,13 +78,15 @@ void Particle::SetMatrix(const glm::mat4& model, const glm::mat4& view, const gl
     glUseProgram(0);
 }
 
-void Particle::Draw()
+void Particle::Draw(const int face_count)
 {
     float time_second = (float)(clock() - last_frame) / 1000;
     last_frame = clock();
     glUseProgram(particle_prog);
     GLuint time_second_loc = glGetUniformLocation(particle_prog, "time_second");
+    GLuint face_count_loc = glGetUniformLocation(particle_prog, "face_count");
     glUniform1f(time_second_loc, time_second);
+    glUniform1i(face_count_loc, face_count);
 
     if (frame_even)
     {

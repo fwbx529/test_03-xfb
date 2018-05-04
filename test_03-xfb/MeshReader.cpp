@@ -197,11 +197,6 @@ void MeshReader::TestXfb()
     glUseProgram(0);
 }
 
-pair<GLuint, GLuint> MeshReader::GetXfb() const
-{
-    return pair<GLuint, GLuint>(xfb_world_position, xfb_world_normal);
-}
-
 void MeshReader::SetMatrixProg(GLuint& prog, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
 {
     GLuint model_matrix_loc = glGetUniformLocation(prog, "model_matrix");
@@ -211,4 +206,9 @@ void MeshReader::SetMatrixProg(GLuint& prog, const glm::mat4& model, const glm::
     glUniformMatrix4fv(model_matrix_loc, 1, GL_FALSE, &model[0][0]);
     glUniformMatrix4fv(view_matrix_loc, 1, GL_FALSE, &view[0][0]);
     glUniformMatrix4fv(projection_matrix_loc, 1, GL_FALSE, &projection[0][0]);
+}
+
+int MeshReader::GetFaceCount()
+{
+    return face_count;
 }
