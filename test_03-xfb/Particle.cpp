@@ -96,6 +96,7 @@ void Particle::Draw()
         glBindVertexArray(vao[1]);
         glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, vbo[0]);
     }
+
     glBeginTransformFeedback(GL_POINTS);
     glPointSize(2);
     glDrawArrays(GL_POINTS, 0, particle_count);
@@ -104,6 +105,12 @@ void Particle::Draw()
     frame_even = !frame_even;
     glUseProgram(0);
     glBindVertexArray(0);
+}
+
+void Particle::Free()
+{
+    glDeleteVertexArrays(2, vao);
+    glDeleteBuffers(2, vbo);
 }
 
 void Particle::SetMatrixProg(GLuint& prog, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)

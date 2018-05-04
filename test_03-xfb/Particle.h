@@ -19,6 +19,7 @@ public:
     void SetInitial(const int count);
     void SetMatrix(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection);
     void Draw();
+    void Free();
 private:
     GLuint vao[2];
     GLuint vbo[2];

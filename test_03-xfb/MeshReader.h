@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <utility>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -22,9 +23,11 @@ public:
     void Free();
 
     void InitXfb();
+    void ReadObjXfb(const string obj_filename);
     void SetMatrixXfb(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection);
     void DrawXfb();
     void TestXfb();
+    pair<GLuint, GLuint> GetXfb() const;
 private:
     GLuint vao;
     GLuint array_buffer[3];
@@ -35,6 +38,7 @@ private:
 
     GLuint xfb_world_position;
     GLuint xfb_world_normal;
+    GLuint tbo_world_position;
     GLuint renderxfb_prog;
 
     void SetMatrixProg(GLuint& prog, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection);

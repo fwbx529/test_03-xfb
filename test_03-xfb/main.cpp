@@ -63,6 +63,7 @@ int main(int argc, char** argv)
         glfwPollEvents();
     }
     mesh_reader.Free();
+    particle.Free();
 
     glfwDestroyWindow(window);
     glfwTerminate();

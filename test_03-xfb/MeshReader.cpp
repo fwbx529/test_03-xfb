@@ -13,6 +13,7 @@ MeshReader::MeshReader()
     glCreateVertexArrays(1, &vao);
     glCreateBuffers(3, array_buffer);
     glCreateBuffers(1, &element_buffer);
+    glCreateTextures(GL_TEXTURE_BUFFER, 1, &tbo_world_position);
 }
 
 void MeshReader::Init()
@@ -120,6 +121,7 @@ void MeshReader::Free()
     glDeleteVertexArrays(1, &vao);
     glDeleteBuffers(3, array_buffer);
     glDeleteBuffers(1, &element_buffer);
+    glDeleteTextures(1, &tbo_world_position);
 }
 
 void MeshReader::InitXfb()
@@ -143,6 +145,15 @@ void MeshReader::InitXfb()
     glLinkProgram(renderxfb_prog);
 }
 
+void MeshReader::ReadObjXfb(const string obj_filename)
+{
+    ReadObj(obj_filename);
+    glNamedBufferStorage(xfb_world_position, 3 * face_count * sizeof(glm::vec3), NULL, 0);
+    glNamedBufferStorage(xfb_world_normal, 3 * face_count * sizeof(glm::vec3), NULL, 0);
+    glTextureBuffer(tbo_world_position, GL_R8, xfb_world_position);
+    glBindTextureUnit(0, tbo_world_position);
+}
+
 void MeshReader::SetMatrixXfb(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
 {
     glUseProgram(renderxfb_prog);
@@ -156,9 +167,7 @@ void MeshReader::DrawXfb()
     glBindVertexArray(vao);
 
     glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, xfb_world_position);
-    glNamedBufferStorage(xfb_world_position, 3 * face_count * sizeof(glm::vec3), NULL, 0);
     glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 1, xfb_world_normal);
-    glNamedBufferStorage(xfb_world_normal, 3 * face_count * sizeof(glm::vec3), NULL, 0);
 
     glBeginTransformFeedback(GL_TRIANGLES);
     glDrawElements(GL_TRIANGLES, 3 * face_count, GL_UNSIGNED_INT, NULL);
@@ -186,6 +195,11 @@ void MeshReader::TestXfb()
     glDrawArrays(GL_TRIANGLES, 0, 3 * face_count);
     glBindVertexArray(0);
     glUseProgram(0);
+}
+
+pair<GLuint, GLuint> MeshReader::GetXfb() const
+{
+    return pair<GLuint, GLuint>(xfb_world_position, xfb_world_normal);
 }
 
 void MeshReader::SetMatrixProg(GLuint& prog, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection)
