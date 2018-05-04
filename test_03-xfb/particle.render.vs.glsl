@@ -12,11 +12,22 @@ out vec4 world_position;
 out vec3 world_position_xfb;
 out vec3 world_velocity_xfb;
 
+bool collision(vec3 pos)
+{
+    for (int f = 0; f < face_count; f++)
+    {
+        vec3 vertex = texelFetch(world_position_tbo, f).xyz;
+        if (distance(pos, vertex) < 0.1) return true;
+    }
+    return false;
+}
+
 void main()
 {
     world_position = model_matrix * vec4(position, 1.0f);
     world_position_xfb = world_position.xyz + velocity * time_second;
     world_velocity_xfb = velocity + vec3(0, -time_second * 0.5f, 0);
+    if (collision(world_position.xyz) == true) world_velocity_xfb = world_velocity_xfb + vec3(0, 1, 0);
     if (world_position_xfb.y < -1.0f)
     {
         world_position_xfb.x = 0.0f;
