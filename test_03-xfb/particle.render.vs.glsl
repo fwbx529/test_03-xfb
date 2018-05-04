@@ -6,6 +6,7 @@ uniform mat4 model_matrix;
 uniform mat4 view_matrix;
 uniform mat4 projection_matrix;
 uniform float time_second;
+uniform samplerBuffer world_position_tbo;
 out vec4 world_position;
 out vec3 world_position_xfb;
 out vec3 world_velocity_xfb;

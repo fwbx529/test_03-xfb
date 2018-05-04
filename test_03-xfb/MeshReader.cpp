@@ -150,7 +150,7 @@ void MeshReader::ReadObjXfb(const string obj_filename)
     ReadObj(obj_filename);
     glNamedBufferStorage(xfb_world_position, 3 * face_count * sizeof(glm::vec3), NULL, 0);
     glNamedBufferStorage(xfb_world_normal, 3 * face_count * sizeof(glm::vec3), NULL, 0);
-    glTextureBuffer(tbo_world_position, GL_R8, xfb_world_position);
+    glTextureBuffer(tbo_world_position, GL_RGB32F, xfb_world_position);
     glBindTextureUnit(0, tbo_world_position);
 }
 

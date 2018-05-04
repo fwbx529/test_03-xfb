@@ -23,7 +23,7 @@ void Initialize(MeshReader& mesh_reader, Particle& particle)
     glm::mat4 projection(glm::perspective(glm::radians(90.0f), 1.0f / aspect, 0.1f, 100.0f));
     mesh_reader.InitXfb();
     mesh_reader.SetMatrixXfb(model, view, projection);
-    mesh_reader.ReadObj("../data/bunny.obj");
+    mesh_reader.ReadObjXfb("../data/bunny.obj");
     particle.Init();
     particle.SetInitial(200);
     particle.SetMatrix(model, view, projection);
