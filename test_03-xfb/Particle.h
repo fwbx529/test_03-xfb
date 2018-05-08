@@ -18,7 +18,7 @@ public:
     void Init();
     void SetInitial(const int count);
     void SetMatrix(const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection);
-    void Draw(const int face_count);
+    void Draw(const int face_count, const float time_second);
     void Free();
 private:
     GLuint vao[2];
@@ -26,6 +26,5 @@ private:
     GLuint particle_prog;
     int particle_count;
     bool frame_even;
-    clock_t last_frame;
     void SetMatrixProg(GLuint& prog, const glm::mat4& model, const glm::mat4& view, const glm::mat4& projection);
 };

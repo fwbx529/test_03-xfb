@@ -42,7 +42,6 @@ void Particle::Init()
 
 void Particle::SetInitial(const int count)
 {
-    last_frame = clock();
     particle_count = count;
     srand((unsigned)time(NULL));
     vector<particle_status> status(count);
@@ -78,10 +77,8 @@ void Particle::SetMatrix(const glm::mat4& model, const glm::mat4& view, const gl
     glUseProgram(0);
 }
 
-void Particle::Draw(const int face_count)
+void Particle::Draw(const int face_count, const float time_second)
 {
-    float time_second = (float)(clock() - last_frame) / 1000;
-    last_frame = clock();
     glUseProgram(particle_prog);
     GLuint time_second_loc = glGetUniformLocation(particle_prog, "time_second");
     GLuint face_count_loc = glGetUniformLocation(particle_prog, "face_count");
